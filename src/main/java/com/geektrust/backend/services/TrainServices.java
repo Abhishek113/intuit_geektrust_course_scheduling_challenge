@@ -52,39 +52,39 @@ public class TrainServices implements ITrainServices{
         {
             String bogieCode = tokens[i];
             
-            Bogie currBogie = null;
+            Bogie currentBogie = null;
             if(bogieCode.equals(ConstantValuesForBogies.ENGINE.getBogieValue()))
             {
                 // Integer distance = trainBogieConfiguration.get(trainName).get(ConstantValuesForBogies.TRAIN_A_END.getBogieValue());
-                currBogie = new Bogie(ConstantValuesForBogies.ENGINE.getBogieValue(), 0, train.getTrainName());
+                currentBogie = new Bogie(ConstantValuesForBogies.ENGINE.getBogieValue(), 0, train.getTrainName());
             }
             else
             {
                 Optional<Integer> sourceDistance = trainBogieConfigurationRepositories.getSourceDistanceOfBogieByCode(bogieCode, trainBogieConfiguration.get(trainName));
                 if(sourceDistance.isPresent())
                 {
-                    currBogie = new Bogie(bogieCode, sourceDistance.get(), trainName);
+                    currentBogie = new Bogie(bogieCode, sourceDistance.get(), trainName);
                 }
                 else
                 {
                     for(Map.Entry<String, Map<String, Integer>> entry : trainBogieConfiguration.entrySet())
                     {
-                        String currTrainName = entry.getKey();
+                        String currentTrainName = entry.getKey();
                         Map<String, Integer> bogieConfiguration = entry.getValue();
                         sourceDistance = trainBogieConfigurationRepositories.getSourceDistanceOfBogieByCode(bogieCode, bogieConfiguration);
                         if(sourceDistance.isPresent())
                         {
-                            currBogie = new Bogie(bogieCode, sourceDistance.get(), currTrainName);
+                            currentBogie = new Bogie(bogieCode, sourceDistance.get(), currentTrainName);
                         }
                     }
                 }
                 
 
-                if(currBogie == null)
+                if(currentBogie == null)
                     throw new BogieNotFoundException("Bogie with " + bogieCode + " not found");
             }
             
-            train.addBogieToTrain(currBogie);
+            train.addBogieToTrain(currentBogie);
         }
         
         return train;
@@ -97,23 +97,23 @@ public class TrainServices implements ITrainServices{
                                                                     trainBogieConfigurationRepositories.getTrainBogieConfiguration().get(train.getTrainName())).
                                                                     orElseThrow(() -> new BogieNotFoundException("Merger bogie with code " + merger + " not found"));
         //bogies = bogies.stream().filter(b -> b.getTrainName().equals(train.getTrainName())).filter(b -> b.getDistanceFromSource() < mergerDistance).collect(Collectors.toList());
-        List<Bogie> temp = new ArrayList<>();
+        List<Bogie> temporaryBogieList = new ArrayList<>();
 
-        for(Bogie currBogie: bogies)
+        for(Bogie currentBogie: bogies)
         {
-            if(!currBogie.getBogieCode().equals(ConstantValuesForBogies.ENGINE.getBogieValue()) && currBogie.getTrainName().equals(train.getTrainName()))
+            if(!currentBogie.getBogieCode().equals(ConstantValuesForBogies.ENGINE.getBogieValue()) && currentBogie.getTrainName().equals(train.getTrainName()))
             {
-                if(currBogie.getDistanceFromSource() >= mergerDistance)
+                if(currentBogie.getDistanceFromSource() >= mergerDistance)
                 {
-                    temp.add(currBogie);
+                    temporaryBogieList.add(currentBogie);
                 }
             }
             else
             {
-                temp.add(currBogie);
+                temporaryBogieList.add(currentBogie);
             }
         }
-        bogies = temp;
+        bogies = temporaryBogieList;
 
         return new Train(train.getId(), train.getTrainName(), bogies);
     }
@@ -150,14 +150,14 @@ public class TrainServices implements ITrainServices{
         String trainBName = trainB.getTrainName();
         String trainAName = trainA.getTrainName();
 
-        trainA.setBogies(trainA.getBogies().stream().filter(Predicate.not(b->b.getBogieCode().equals(merger))).collect(Collectors.toList()));
-        trainB.setBogies(trainB.getBogies().stream().filter(Predicate.not(b->b.getBogieCode().equals(merger))).collect(Collectors.toList()));
+        trainA.setBogies(trainA.getBogies().stream().filter(Predicate.not(bogie->bogie.getBogieCode().equals(merger))).collect(Collectors.toList()));
+        trainB.setBogies(trainB.getBogies().stream().filter(Predicate.not(bogie->bogie.getBogieCode().equals(merger))).collect(Collectors.toList()));
         
-        List<Bogie> trainBbogiesFromA = trainA.getBogies().stream().filter(b->b.getTrainName().equals(trainBName)).collect(Collectors.toList());
-        trainA.setBogies(trainA.getBogies().stream().filter(Predicate.not(b->b.getTrainName().equals(trainBName))).collect(Collectors.toList()));
+        List<Bogie> trainBbogiesFromA = trainA.getBogies().stream().filter(bogie->bogie.getTrainName().equals(trainBName)).collect(Collectors.toList());
+        trainA.setBogies(trainA.getBogies().stream().filter(Predicate.not(bogie->bogie.getTrainName().equals(trainBName))).collect(Collectors.toList()));
 
-        List<Bogie> trainAbogiesFromB = trainB.getBogies().stream().filter(b->b.getTrainName().equals(trainAName)).collect(Collectors.toList());
-        trainB.setBogies(trainB.getBogies().stream().filter(Predicate.not(b->b.getTrainName().equals(trainAName))).collect(Collectors.toList()));
+        List<Bogie> trainAbogiesFromB = trainB.getBogies().stream().filter(bogie->bogie.getTrainName().equals(trainAName)).collect(Collectors.toList());
+        trainB.setBogies(trainB.getBogies().stream().filter(Predicate.not(bogie->bogie.getTrainName().equals(trainAName))).collect(Collectors.toList()));
 
         trainA.setBogies(Stream.concat(trainA.getBogies().stream(), trainAbogiesFromB.stream()).collect(Collectors.toList()));
         trainB.setBogies(Stream.concat(trainB.getBogies().stream(), trainBbogiesFromA.stream()).collect(Collectors.toList()));
@@ -176,11 +176,11 @@ public class TrainServices implements ITrainServices{
         updatedBogiesSourceDistanceFromNewSource(trainB, trainBmergerDistance);
 
 
-        List<Bogie> allEngines = Stream.concat(trainA.getBogies().stream().filter(b->b.getBogieCode().equals(ConstantValuesForBogies.ENGINE.getBogieValue())), 
-                                                trainB.getBogies().stream().filter(b->b.getBogieCode().equals(ConstantValuesForBogies.ENGINE.getBogieValue()))).collect(Collectors.toList());
+        List<Bogie> allEngines = Stream.concat(trainA.getBogies().stream().filter(bogie->bogie.getBogieCode().equals(ConstantValuesForBogies.ENGINE.getBogieValue())), 
+                                                trainB.getBogies().stream().filter(bogie->bogie.getBogieCode().equals(ConstantValuesForBogies.ENGINE.getBogieValue()))).collect(Collectors.toList());
                 
-        List<Bogie> mergedBogies = Stream.concat(trainA.getBogies().stream().filter(Predicate.not(b->b.getBogieCode().equals(ConstantValuesForBogies.ENGINE.getBogieValue()))), 
-                                                trainB.getBogies().stream().filter(Predicate.not(b->b.getBogieCode().equals(ConstantValuesForBogies.ENGINE.getBogieValue())))).
+        List<Bogie> mergedBogies = Stream.concat(trainA.getBogies().stream().filter(Predicate.not(bogie->bogie.getBogieCode().equals(ConstantValuesForBogies.ENGINE.getBogieValue()))), 
+                                                trainB.getBogies().stream().filter(Predicate.not(bogie->bogie.getBogieCode().equals(ConstantValuesForBogies.ENGINE.getBogieValue())))).
                                                 collect(Collectors.toList());
 
         Collections.sort(mergedBogies, Bogie.getSortByDistanceFromSourceClass());
@@ -202,9 +202,9 @@ public class TrainServices implements ITrainServices{
             String trainName = bogie.getTrainName();
             if(trainBogieMap.containsKey(trainName))
             {
-                List<Bogie> currBogies = trainBogieMap.get(trainName);
-                currBogies.add(bogie);
-                trainBogieMap.put(trainName, currBogies);
+                List<Bogie> currentBogies = trainBogieMap.get(trainName);
+                currentBogies.add(bogie);
+                trainBogieMap.put(trainName, currentBogies);
             }
             else
                 trainBogieMap.put(trainName, List.of(bogie));

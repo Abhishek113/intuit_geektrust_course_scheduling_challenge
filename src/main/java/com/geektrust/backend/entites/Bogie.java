@@ -57,8 +57,8 @@ class SortByDistanceFromSource implements Comparator<Bogie>
 {
 
     @Override
-    public int compare(Bogie b1, Bogie b2) {
+    public int compare(Bogie bogie1, Bogie bogie2) {
         
-        return (int)b1.getDistanceFromSource() - (int)b2.getDistanceFromSource();
+        return (int)bogie1.getDistanceFromSource() - (int)bogie2.getDistanceFromSource();
     }
 }
