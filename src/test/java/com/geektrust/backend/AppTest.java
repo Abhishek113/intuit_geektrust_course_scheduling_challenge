@@ -26,8 +26,8 @@ class AppTest {
     public void runMathosShouldPrintOutputCorrectly()
     {
         String expectedOuput = "ARRIVAL TRAIN_A ENGINE HYB NGP ITJ\nARRIVAL TRAIN_B ENGINE NJP PTA\nDEPARTURE TRAIN_AB ENGINE ENGINE NJP PTA ITJ NGP";
-        List<String> commandLineArgs = List.of("INPUT_FILE=input.txt");
-        App.run(commandLineArgs);
+        // List<String> commandLineArgs = List.of("INPUT_FILE=input.txt");
+        App.run("input.txt");
         Assertions.assertEquals(expectedOuput, outputStreamCaptor.toString().trim());
     }
 

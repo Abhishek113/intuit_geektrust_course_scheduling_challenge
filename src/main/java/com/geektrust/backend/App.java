@@ -12,20 +12,20 @@ import com.geektrust.backend.services.TrainServices;
 public class App {
 
 	public static void main(String[] args) {
-		List<String> commandLineArgs = new LinkedList<>(Arrays.asList(args));
-        String expectedSequence = "INPUT_FILE";
-        String actualSequence = commandLineArgs.stream()
-                .map(a -> a.split("=")[0])
-                .collect(Collectors.joining("$"));
-        if(expectedSequence.equals(actualSequence)){
-            run(commandLineArgs);
-        }
-		
+		// List<String> commandLineArgs = new LinkedList<>(Arrays.asList(args));
+        // String expectedSequence = "INPUT_FILE";
+        // String actualSequence = commandLineArgs.stream()
+        //         .map(a -> a.split("=")[0])
+        //         .collect(Collectors.joining("$"));
+        // if(expectedSequence.equals(actualSequence)){
+        //     run(commandLineArgs);
+        // }
+		run(args[0]);
 	}
 
-	public static void run(List<String> commandLineArgs) {
+	public static void run(String inputFile) {
 		
-		String inputFile = commandLineArgs.get(0).split("=")[1];
+		// String inputFile = commandLineArgs.get(0).split("=")[1];
 
 		try
 		{
