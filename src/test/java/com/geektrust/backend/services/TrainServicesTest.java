@@ -89,7 +89,7 @@ public class TrainServicesTest {
     @DisplayName("printArrivalAndDepartureOuput should print journey ended message")
     public void printArrivalAndDepartureOuputShouldPrintJourneyEndedIfNobogieLeft()
     {
-        String expectedOuptut = "ARRIVAL TRAIN_A ENGINE\nARRIVAL TRAIN_B\nJOURNEY_ENDED";
+        String expectedOuptut = "ARRIVAL TRAIN_A ENGINE\nARRIVAL TRAIN_B ENGINE\nJOURNEY_ENDED";
 
         try {
             TrainBogieConfigurationRepository trainBogieConfigurationRepository = new TrainBogieConfigurationRepository();
