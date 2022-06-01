@@ -1,6 +1,8 @@
 package com.geektrust.backend;
 
 import java.io.IOException;
+
+import com.geektrust.backend.exception.BogieNotFoundException;
 import com.geektrust.backend.repositories.TrainBogieConfigurationRepository;
 import com.geektrust.backend.services.TrainServices;
 
@@ -22,6 +24,10 @@ public class App {
 			trainServices.printArrivalAndDepartureOuput(inputFile);
 		}
 		catch(IOException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		catch(BogieNotFoundException e)
 		{
 			System.out.println(e.getMessage());
 		}

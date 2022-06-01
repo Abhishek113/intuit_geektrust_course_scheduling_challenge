@@ -19,6 +19,7 @@ import com.geektrust.backend.entites.Bogie;
 import com.geektrust.backend.entites.ConstantValuesForBogies;
 import com.geektrust.backend.entites.Train;
 import com.geektrust.backend.exception.BogieNotFoundException;
+import com.geektrust.backend.exception.InvalidInputException;
 // import com.geektrust.backend.repositories.CRUDRepository;
 // import com.geektrust.backend.repositories.ITrainRepository;
 import com.geektrust.backend.repositories.ITrainBogieConfigurationRepository;
@@ -34,12 +35,18 @@ public class TrainServices implements ITrainServices{
     }
 
     @Override
-    public Train createTain(String tarinBogieString) throws IOException{
+    public Train createTain(String tarinBogieString) throws IOException, BogieNotFoundException, InvalidInputException{
 
         if(tarinBogieString == null)
-            throw new RuntimeException("At least train name must be provided");
+            throw new InvalidInputException("At least train name must be provided");
         
         String[] tokens = tarinBogieString.split(" ");
+
+        if(tokens.length < Integer.parseInt(ConstantValuesForBogies.INPUT_MINIMUM_NUMBER_OF_STRINGS.getConstantValue()))
+            throw new InvalidInputException("At least train name and ENGINE must be povided");
+        
+        if(!tokens[1].equals(ConstantValuesForBogies.ENGINE.getBogieValue()))
+            throw new InvalidInputException("Wrong ENGINE value");
 
         String trainName = tokens[0];
 
@@ -135,7 +142,7 @@ public class TrainServices implements ITrainServices{
     }
 
     @Override
-    public Train mergeTwoTrains(Train trainA, Train trainB) {
+    public Train mergeTwoTrains(Train trainA, Train trainB) throws BogieNotFoundException{
 
         String merger = ConstantValuesForBogies.MERGER.getBogieValue();
 
@@ -186,67 +193,34 @@ public class TrainServices implements ITrainServices{
         Collections.sort(mergedBogies, Bogie.getSortByDistanceFromSourceClass());
         Collections.reverse(mergedBogies);
 
-        Train trainAB = new Train("TRAIN_AB", Stream.concat(allEngines.stream(), mergedBogies.stream()).collect(Collectors.toList()));
+        String trainABName = "TRAIN_AB";
+        Train trainAB = new Train(trainABName, Stream.concat(allEngines.stream(), mergedBogies.stream()).collect(Collectors.toList()));
 
         return trainAB;
     }
 
-    @Override
-    public List<Train> splitTrains(Train train) {
-
-        Map<String, List<Bogie>> trainBogieMap = new HashMap<>();
-        List<Bogie> allBogies = train.getBogies();
-
-        for(Bogie bogie:allBogies)
-        {
-            String trainName = bogie.getTrainName();
-            if(trainBogieMap.containsKey(trainName))
-            {
-                List<Bogie> currentBogies = trainBogieMap.get(trainName);
-                currentBogies.add(bogie);
-                trainBogieMap.put(trainName, currentBogies);
-            }
-            else
-                trainBogieMap.put(trainName, List.of(bogie));
-        }
-
-        List<Train> finalTrains = new ArrayList<>();
-
-        for(Map.Entry<String, List<Bogie>> entry: trainBogieMap.entrySet())
-        {
-            finalTrains.add(new Train(entry.getKey(), entry.getValue()));
-        }
-
-        return finalTrains;
-    }
 
     @Override
-    public void printArrivalAndDepartureOuput(String inputFile) {
+    public void printArrivalAndDepartureOuput(String inputFile) throws IOException{
 			
-        try{
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+        
+        String line = reader.readLine();
 
-			BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-			
-			String line = reader.readLine();
+        List<Train> trains = new ArrayList<>();
+        while(line != null)
+        {
+            trains.add(createTain(line));
+            line = reader.readLine();
+        }
+        
+        
+        Train mergedTrain = mergeTwoTrains(trains.get(0), trains.get(1));
+        MergedTrainDto mergedTrainDto = new MergedTrainDto(mergedTrain);
+        System.out.println(mergedTrainDto);
 
-            List<Train> trains = new ArrayList<>();
-			while(line != null)
-			{
-                trains.add(createTain(line));
-                line = reader.readLine();
-			}
-            
-            
-            Train mergedTrain = mergeTwoTrains(trains.get(0), trains.get(1));
-            MergedTrainDto mergedTrainDto = new MergedTrainDto(mergedTrain);
-            System.out.println(mergedTrainDto);
+        reader.close();
 
-            reader.close();
 
-		}
-		catch(IOException e)
-		{
-			System.out.println(e.getMessage());
-		}
     }
 }

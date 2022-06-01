@@ -6,6 +6,8 @@ import java.io.PrintStream;
 
 import com.geektrust.backend.dtos.MergedTrainDto;
 import com.geektrust.backend.entites.Train;
+import com.geektrust.backend.exception.BogieNotFoundException;
+import com.geektrust.backend.exception.InvalidInputException;
 import com.geektrust.backend.repositories.TrainBogieConfigurationRepository;
 
 import org.junit.jupiter.api.AfterEach;
@@ -52,6 +54,66 @@ public class TrainServicesTest {
         
     }
 
+    @Test
+    @DisplayName("createTain should throw BogieNotFoundException if invalid bogie is associated with train")
+    public void createTainShouldThrowBogieNotFoundExceptionOnInvalidBogieAssociationWithTrain()
+    {
+        try {
+            TrainBogieConfigurationRepository trainBogieConfigurationRepository = new TrainBogieConfigurationRepository();
+            TrainServices trainService = new TrainServices(trainBogieConfigurationRepository);
+            String tarinBogieString = "TRAIN_A ENGINE NDL NDL KRN GHY SLM NJP NGP XYZ";
+
+            Assertions.assertThrows(BogieNotFoundException.class, ()->trainService.createTain(tarinBogieString));
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("createTain should throw InvalidInputException on null input")
+    public void createTainShouldThrowInvalidInputExceptionOnNullInput()
+    {
+        try {
+            TrainBogieConfigurationRepository trainBogieConfigurationRepository = new TrainBogieConfigurationRepository();
+            TrainServices trainService = new TrainServices(trainBogieConfigurationRepository);
+
+            Assertions.assertThrows(InvalidInputException.class, ()->trainService.createTain(null));
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }   
+    }
+
+    @Test
+    @DisplayName("creatTrain should throw InvalidInputException on empty input")
+    public void createTrainShouldThrowInvalidInputExceptionOnEmptyInput()
+    {
+        try {
+            TrainBogieConfigurationRepository trainBogieConfigurationRepository = new TrainBogieConfigurationRepository();
+            TrainServices trainService = new TrainServices(trainBogieConfigurationRepository);
+
+            Assertions.assertThrows(InvalidInputException.class, ()->trainService.createTain(""));
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }   
+    }
+
+    @Test
+    @DisplayName("creatTrain should throw InvalidInputException on invalid ENGINE code")
+    public void createTrainShouldThrowInvalidInputExceptionOnInvalidEngineCode()
+    {
+        try {
+            TrainBogieConfigurationRepository trainBogieConfigurationRepository = new TrainBogieConfigurationRepository();
+            TrainServices trainService = new TrainServices(trainBogieConfigurationRepository);
+
+            Assertions.assertThrows(InvalidInputException.class, ()->trainService.createTain("TRAIN_A NDL"));
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }   
+    }
 
     @Test
     public void mergerTrainShouldMergeTwoTrainesSuccessfully()
@@ -87,7 +149,8 @@ public class TrainServicesTest {
             TrainBogieConfigurationRepository trainBogieConfigurationRepository = new TrainBogieConfigurationRepository();
             TrainServices trainService = new TrainServices(trainBogieConfigurationRepository);
             
-            trainService.printArrivalAndDepartureOuput("inputJourneyEnd.txt");
+            String inputFile = "inputJourneyEnd.txt";
+            trainService.printArrivalAndDepartureOuput(inputFile);
             Assertions.assertEquals(expectedOuptut, outputStreamCaptor.toString().trim());
             
 
@@ -95,6 +158,36 @@ public class TrainServicesTest {
             System.out.println(e.getMessage());
         }
 
+    }
+
+    @Test
+    @DisplayName("printArrivalAndDepartureOuput should throw IOException on wrong input file path")
+    public void printArrivalAndDepartureOuputShouldThrowIOEXceptionOnWrongInputFilePath()
+    {
+        try {
+            TrainBogieConfigurationRepository trainBogieConfigurationRepository = new TrainBogieConfigurationRepository();
+            TrainServices trainService = new TrainServices(trainBogieConfigurationRepository);
+            String inputFile = "inputXyZ.txt";
+            Assertions.assertThrows(IOException.class, () -> trainService.printArrivalAndDepartureOuput(inputFile));
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("printArrivalAndDepartureOuput should throw BogieNotFoundException on wrong train input with wrong bogie code")
+    public void printArrivalAndDepartureOuputShouldthrowBogieNotFoundExceptiononwrongtraininputwithwrongbogiecode()
+    {
+        try {
+            TrainBogieConfigurationRepository trainBogieConfigurationRepository = new TrainBogieConfigurationRepository();
+            TrainServices trainService = new TrainServices(trainBogieConfigurationRepository);
+            String inputFile = "trainWithWrongBogieCodeInput.txt";
+            Assertions.assertThrows(BogieNotFoundException.class, () -> trainService.printArrivalAndDepartureOuput(inputFile));
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @AfterEach
