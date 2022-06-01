@@ -10,7 +10,6 @@ public class Train extends BaseEntity{
     
     private final String trainName;
     private List<Bogie> bogies;
-    // private ITrainBogieConfigurationRepository bogieConfigurationRepository;
 
     public Train(Train train) throws IOException
     {
@@ -21,8 +20,7 @@ public class Train extends BaseEntity{
     {
         this.trainName = trainName;
         this.bogies = new ArrayList<>();
-        // this.bogieConfigurationRepository = new TrainBogieConfigurationRepository();
-        // this.bogieConfigurationRepository.loadBogieConfiguration(BogieConfigurationPaths.TRAIN_A_BOGIE_CONFIG_PATH.getPath());
+
     }
 
     public Train(String id, String trainName, List<Bogie> bogies)
@@ -61,8 +59,4 @@ public class Train extends BaseEntity{
         this.bogies.add(bogie);
     }
 
-    // public ITrainBogieConfigurationRepository getBogieConfigurationRepository()
-    // {
-    //     return this.bogieConfigurationRepository;
-    // }
 }

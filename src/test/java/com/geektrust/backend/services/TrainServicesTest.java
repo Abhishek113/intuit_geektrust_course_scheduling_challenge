@@ -3,7 +3,6 @@ package com.geektrust.backend.services;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.URISyntaxException;
 
 import com.geektrust.backend.dtos.MergedTrainDto;
 import com.geektrust.backend.entites.Train;
@@ -50,10 +49,7 @@ public class TrainServicesTest {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        catch(URISyntaxException e)
-        {
-            System.out.println(e.getMessage());
-        }
+        
     }
 
 
@@ -77,10 +73,6 @@ public class TrainServicesTest {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        catch(URISyntaxException e)
-        {
-            System.out.println(e.getMessage());
-        }
 
 
     }
@@ -100,10 +92,6 @@ public class TrainServicesTest {
             
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        catch(URISyntaxException e)
-        {
             System.out.println(e.getMessage());
         }
 

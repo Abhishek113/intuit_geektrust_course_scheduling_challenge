@@ -1,23 +1,13 @@
 package com.geektrust.backend;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-
-
 import com.geektrust.backend.repositories.TrainBogieConfigurationRepository;
 import com.geektrust.backend.services.TrainServices;
 
 public class App {
 
 	public static void main(String[] args) {
-		// List<String> commandLineArgs = new LinkedList<>(Arrays.asList(args));
-        // String expectedSequence = "INPUT_FILE";
-        // String actualSequence = commandLineArgs.stream()
-        //         .map(a -> a.split("=")[0])
-        //         .collect(Collectors.joining("$"));
-        // if(expectedSequence.equals(actualSequence)){
-        //     run(commandLineArgs);
-        // }
+		
 		run(args[0]);
 	}
 
@@ -35,10 +25,6 @@ public class App {
 		{
 			System.out.println(e.getMessage());
 		}
-		catch(URISyntaxException e)
-        {
-            System.out.println(e.getMessage());
-        }
 		
 		
 
