@@ -1,10 +1,8 @@
 package com.geektrust.backend;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.net.URISyntaxException;
+
 
 import com.geektrust.backend.repositories.TrainBogieConfigurationRepository;
 import com.geektrust.backend.services.TrainServices;
@@ -37,6 +35,10 @@ public class App {
 		{
 			System.out.println(e.getMessage());
 		}
+		catch(URISyntaxException e)
+        {
+            System.out.println(e.getMessage());
+        }
 		
 		
 
