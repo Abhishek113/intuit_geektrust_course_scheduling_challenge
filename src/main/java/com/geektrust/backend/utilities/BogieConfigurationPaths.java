@@ -4,7 +4,7 @@ public enum BogieConfigurationPaths {
 
     BASEPATH("src/main/java/com/geektrust/backend/"), 
     //TRAINs_BOGIE_CONFIG_PATH(BASEPATH.getPath() + "JSONS/trainsBogiesConfigurations.json"), trainsBogiesConfigurations.json
-    TRAINs_BOGIE_CONFIG_PATH("trainsBogiesConfigurations.json"),
+    TRAINs_BOGIE_CONFIG_PATH("JSONS/trainsBogiesConfigurations.json"),
     TRAIN_A_BOGIE_CONFIG_PATH(BASEPATH.getPath() + "JSONS/train-A-BogiesConfigurations.json"),
     TRAIN_B_BOGIE_CONFIG_PATH(BASEPATH.getPath() + "JSONS/train-B-BogiesConfigurations.json");
     

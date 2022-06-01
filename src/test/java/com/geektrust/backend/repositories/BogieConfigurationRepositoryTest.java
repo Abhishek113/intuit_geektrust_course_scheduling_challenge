@@ -30,7 +30,7 @@ public class BogieConfigurationRepositoryTest {
             List<String> expectedTrains = List.of("TRAIN_A", "TRAIN_B");
             List<String> expectedTrainABogies = List.of("CHN", "SLM", "BLR", "KRN", "HYB", "NGP", "ITJ", "BPL", "AGA", "NDL");
         
-            bogieConfigurationRepository.loadBogieConfiguration("trainsBogiesConfigurations.json");
+            //bogieConfigurationRepository.loadBogieConfiguration("trainsBogiesConfigurations.json");
             Map<String, Map<String, Integer>> trainBogieConfiguration = bogieConfigurationRepository.getTrainBogieConfiguration();
             Assertions.assertEquals(expectedTrains, bogieConfigurationRepository.getTrainNames());
             Assertions.assertEquals(expectedTrainABogies, trainBogieConfiguration.get("TRAIN_A").entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList()));
