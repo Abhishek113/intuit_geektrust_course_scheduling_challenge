@@ -2,6 +2,7 @@ package com.geektrust.backend.repositories;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,12 +45,15 @@ public class TrainBogieConfigurationRepository implements ITrainBogieConfigurati
     @Override
     public void loadBogieConfiguration(String jsonPath) throws JsonParseException, JsonMappingException, IOException, URISyntaxException {
         
-        URL url = this.getClass().getClassLoader().getResource(jsonPath);
+        // URL url = this.getClass().getClassLoader().getResource(jsonPath);
 
-        File fileObj = new File(url.toURI());
+        // File fileObj = new File(url.toURI());
+
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(jsonPath);
         ObjectMapper objectMapper = new ObjectMapper();
         
-        this.trainBogieConfiguration = objectMapper.readValue(fileObj, Map.class);
+        // this.trainBogieConfiguration = objectMapper.readValue(fileObj, Map.class);
+        this.trainBogieConfiguration = objectMapper.readValue(inputStream, Map.class);
 
     }
 
