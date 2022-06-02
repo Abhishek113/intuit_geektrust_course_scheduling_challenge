@@ -51,6 +51,18 @@ public class Bogie extends BaseEntity{
         return new SortByDistanceFromSource();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        
+        Bogie bogie = (Bogie)obj;
+        if(bogie.getBogieCode().equals(this.bogieCode) && bogie.getTrainName().equals(this.trainName))
+            return true;
+
+        return false;
+    }
+
 }
 
 class SortByDistanceFromSource implements Comparator<Bogie>

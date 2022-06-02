@@ -1,6 +1,5 @@
 package com.geektrust.backend.entites;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import com.geektrust.backend.exception.InvalidBogieException;
@@ -11,7 +10,7 @@ public class Train extends BaseEntity{
     private final String trainName;
     private List<Bogie> bogies;
 
-    public Train(Train train) throws IOException
+    public Train(Train train)
     {
         this(train.getId(), train.getTrainName(), train.getBogies());
     }
@@ -57,6 +56,18 @@ public class Train extends BaseEntity{
             throw new InvalidBogieException("Can not add null bogie");
 
         this.bogies.add(bogie);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        
+        Train train = (Train) obj;
+        if(this.trainName.equals(train.getTrainName()))
+            return true;
+        
+        return false;
     }
 
 }
