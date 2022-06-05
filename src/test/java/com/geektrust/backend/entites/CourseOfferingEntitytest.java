@@ -19,7 +19,7 @@ public class CourseOfferingEntitytest {
     {
         try {
 
-            String expectedOutput = "Course: JAVA id: OFFERING-JAVA-JAMES Author: JAMES";
+            String expectedOutput = "Course: JAVA id: OFFERING-JAVA-JAMES Author: JAMES Date: 15062022";
             CourseOffering courseOffering = new CourseOffering("JAVA", "JAMES", "15062022", 1, 2);
 
             Assertions.assertEquals(expectedOutput, courseOffering.toString());

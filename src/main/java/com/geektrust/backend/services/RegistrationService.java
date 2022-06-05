@@ -2,13 +2,10 @@ package com.geektrust.backend.services;
 
 import java.util.List;
 import java.util.Optional;
-
-import com.geektrust.backend.entities.AcknowledgementMessages;
 import com.geektrust.backend.entities.CourseOffering;
 import com.geektrust.backend.entities.Registration;
 import com.geektrust.backend.entities.RegistrationStatus;
 import com.geektrust.backend.entities.User;
-import com.geektrust.backend.exceptions.CourseFullErrorException;
 import com.geektrust.backend.exceptions.InputDataErrorException;
 import com.geektrust.backend.exceptions.NoCourseOfferingFoundException;
 import com.geektrust.backend.repositories.ICourseOfferingRepository;
@@ -45,6 +42,11 @@ public class RegistrationService implements IRegistrationService{
         {
             user = new User(emailId);
         }
+
+        String registrationId = Registration.createId(user, courseOffering);
+        Optional<Registration> registrationCheck = this.registrationRepository.findById(registrationId);
+        if(registrationCheck.isPresent())
+            return registrationCheck.get();
         
         Registration registration = new Registration(user, courseOffering);
         if(!this.idCourseOfferingCapacityFull(courseOffering))

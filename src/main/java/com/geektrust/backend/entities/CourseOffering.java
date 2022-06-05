@@ -85,7 +85,7 @@ public class CourseOffering extends BaseEnitiy{
 
     @Override
     public String toString() {
-        String output = "Course: "+ this.courseName +" id: " + this.id + " Author: " + this.author;
+        String output = "Course: "+ this.courseName +" id: " + this.id + " Author: " + this.author + " Date: " + this.date;
 
         return output;
     }

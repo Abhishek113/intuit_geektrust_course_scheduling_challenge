@@ -11,5 +11,5 @@ public interface CRUDRepository<T, ID> {
     boolean existsById(ID id);
     public void delete(T entity);
     public void deleteById(ID id);
-    public long count();
+    public Integer count();
 }

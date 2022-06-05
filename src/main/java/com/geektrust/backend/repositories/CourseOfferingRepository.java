@@ -22,7 +22,7 @@ public class CourseOfferingRepository implements ICourseOfferingRepository{
     }
 
     @Override
-    public long count() {
+    public Integer count() {
         // TODO Auto-generated method stub
         return 0;
     }

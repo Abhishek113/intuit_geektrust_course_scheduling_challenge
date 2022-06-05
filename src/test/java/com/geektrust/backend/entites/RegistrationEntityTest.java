@@ -2,6 +2,7 @@ package com.geektrust.backend.entites;
 
 import com.geektrust.backend.entities.CourseOffering;
 import com.geektrust.backend.entities.Registration;
+import com.geektrust.backend.entities.RegistrationStatus;
 import com.geektrust.backend.entities.User;
 
 import org.junit.jupiter.api.Assertions;
@@ -14,18 +15,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class RegistrationEntityTest {
 
+    private User user = new User("ANDY@GMAIL.COM");
+    private CourseOffering courseOffering = new CourseOffering("JAVA", "JAMES", "15062022", 1, 2);
+
+    private Registration registration = new Registration(user, courseOffering);
+
     @Test
     @DisplayName("Registration object should get created successfuly")
     public void registrationObjectShouldGetCreatedSuccessfuly()
     {
         try {
-            
             String expectedOutput = "Registration id: REG-COURSE-ANDY-JAVA User: ANDY course offering: JAVA";
-            User user = new User("ANDY@GMAIL.COM");
-            CourseOffering courseOffering = new CourseOffering("JAVA", "JAMES", "15062022", 1, 2);
-
-            Registration registration = new Registration(user, courseOffering);
-
             Assertions.assertEquals(expectedOutput, registration.toString());
 
         } catch (Exception e) {
@@ -40,10 +40,6 @@ public class RegistrationEntityTest {
         try {
             
             String expectedOutput = "REG-COURSE-ANDY-JAVA";
-            User user = new User("ANDY@GMAIL.COM");
-            CourseOffering courseOffering = new CourseOffering("JAVA", "JAMES", "15062022", 1, 2);
-
-            Registration registration = new Registration(user, courseOffering);
 
             Assertions.assertEquals(expectedOutput, registration.getId());
 
@@ -51,5 +47,24 @@ public class RegistrationEntityTest {
             System.out.println(e.getMessage());
         }
     }
-    
+
+    @Test
+    @DisplayName("setStatus should set status correctly")
+    public void setStatusShouldSetStatusCorrectly()
+    {
+        try{
+
+            RegistrationStatus expectedOutput = RegistrationStatus.CONFIRMED;
+
+            this.registration.setStatus(RegistrationStatus.CONFIRMED);
+
+            Assertions.assertEquals(expectedOutput, this.registration.getStatus());
+
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }    
+
 }

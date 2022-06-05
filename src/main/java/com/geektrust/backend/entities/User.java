@@ -65,7 +65,7 @@ public class User extends BaseEnitiy{
         if(user == this)
             return true;
         
-        if(this.id.equals(user.getId()))
+        if(this.emailId.equals(user.getEmailId()))
             return true;
         
 

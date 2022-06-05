@@ -16,7 +16,7 @@ public class CourseOfferingRepositoryTest {
 
     @Test
     @DisplayName("Save method should save the course object correctly")
-    public void saveMethodShouldSaveTheCOurseCorrectly()
+    public void saveMethodShouldSaveTheCourseCorrectly()
     {
         try {
             CourseOffering courseOffering = new CourseOffering("JAVA", "JAMES", "15062022", 1, 2);

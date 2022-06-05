@@ -23,7 +23,20 @@ public class UserRepository implements IUserRepository{
     }
 
     @Override
-    public long count() {
+    public Optional<User> findById(String id) {
+        return Optional.ofNullable(userMap.get(id));
+    }
+
+    @Override
+    public User save(User user) {
+
+        userMap.put(user.getEmailId(), user);
+
+        return user;
+    }
+    
+    @Override
+    public Integer count() {
         // TODO Auto-generated method stub
         return 0;
     }
@@ -51,19 +64,5 @@ public class UserRepository implements IUserRepository{
         // TODO Auto-generated method stub
         return null;
     }
-
-    @Override
-    public Optional<User> findById(String id) {
-        return Optional.ofNullable(userMap.get(id));
-    }
-
-    @Override
-    public User save(User user) {
-
-        userMap.put(user.getEmailId(), user);
-
-        return user;
-    }
-    
     
 }   

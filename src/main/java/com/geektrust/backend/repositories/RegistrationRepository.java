@@ -25,30 +25,6 @@ public class RegistrationRepository implements IRegistrationRepository{
     }
 
     @Override
-    public long count() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public void delete(Registration entity) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void deleteById(String id) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public boolean existsById(String id) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
     public List<Registration> findAll() {
         if(this.registrationMap.size() == 0)
             return new ArrayList<>();
@@ -78,6 +54,30 @@ public class RegistrationRepository implements IRegistrationRepository{
         return registrations;
     }
 
+    @Override
+    public Integer count() {
+        return this.registrationMap.size();
+    }
+
+    @Override
+    public void delete(Registration registration) {
+        this.deleteById(registration.getId());
+        
+    }
+
+    @Override
+    public void deleteById(String id) {
+        if(existsById(id))
+            this.registrationMap.remove(id);
+        
+    }
+
+    @Override
+    public boolean existsById(String id) {
+        if(this.registrationMap.containsKey(id))
+            return true;
+        return false;
+    }
 
     
 }

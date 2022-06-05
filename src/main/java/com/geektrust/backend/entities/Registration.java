@@ -9,15 +9,15 @@ public class Registration extends BaseEnitiy{
     private final CourseOffering courseOffering;
     private RegistrationStatus status;
 
-    private void createId()
+    public static String createId(User user, CourseOffering courseOffering)
     {
-        this.id = IdPrefix.REG_COURSE.getPrefixValue() + "-" + this.user.getEmailId().split("@")[0] + "-" + this.courseOffering.getCourseName(); 
+        return IdPrefix.REG_COURSE.getPrefixValue() + "-" + user.getEmailId().split("@")[0] + "-" + courseOffering.getCourseName(); 
     }
     public Registration(User user, CourseOffering courseOffering)
     {
         this.user = user;
         this.courseOffering = courseOffering;
-        this.createId();
+        this.id = Registration.createId(user, courseOffering);
         this.status = RegistrationStatus.CONFIRMED;
     }
 
