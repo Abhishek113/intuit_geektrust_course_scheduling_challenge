@@ -1,39 +1,56 @@
 package com.geektrust.backend;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-import com.geektrust.backend.exception.BogieNotFoundException;
-import com.geektrust.backend.repositories.TrainBogieConfigurationRepository;
-import com.geektrust.backend.services.TrainServices;
+import com.geektrust.backend.appConfig.ApplicationConfiguration;
+import com.geektrust.backend.commands.CommandInvoker;
+import com.geektrust.backend.exceptions.NoInputFileProvidedExceptions;
 
 public class App {
 
 	public static void main(String[] args) {
-		
-		run(args[0]);
+		App.run(args);
 	}
 
-	public static void run(String inputFile) {
-		
-		// String inputFile = commandLineArgs.get(0).split("=")[1];
+	public static void run(String[] args) {
+		try {
+			if(args.length == 0)
+				throw new NoInputFileProvidedExceptions("Provide the input file!");
+			
+			String inputFileName = args[0];
+			ApplicationConfiguration applicationConfiguration = new ApplicationConfiguration();
+			CommandInvoker commandInvoker = applicationConfiguration.getCommandInvoker();
 
-		try
-		{
-			TrainBogieConfigurationRepository tainBogieConfigurationRepositories = new TrainBogieConfigurationRepository();
-			TrainServices trainServices = new TrainServices(tainBogieConfigurationRepositories);
-			trainServices.printArrivalAndDepartureOuput(inputFile);
+			BufferedReader reader = new BufferedReader(new FileReader(inputFileName));
+
+			String line = reader.readLine();
+
+			while(line != null)
+			{
+				line = line.trim();
+				List<String> values = Arrays.asList(line.split(" "));
+				commandInvoker.executeCommand(values.get(0), values);
+				line = reader.readLine();
+			}
+
+			reader.close();
+
 		}
-		catch(IOException e)
+		catch(NoInputFileProvidedExceptions e)
 		{
 			System.out.println(e.getMessage());
-		}
-		catch(BogieNotFoundException e)
-		{
+		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
-		}
-		
-		
-
+		} 
+		catch (IOException e) {
+			System.out.println(e.getMessage());
+		} 
+	
 	}
 
 }
