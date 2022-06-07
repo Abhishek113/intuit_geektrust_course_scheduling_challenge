@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.geektrust.backend.entities.CourseOffering;
 import com.geektrust.backend.entities.Registration;
+import com.geektrust.backend.entities.RegistrationStatus;
 
 public class RegistrationRepository implements IRegistrationRepository{
 
@@ -49,6 +51,12 @@ public class RegistrationRepository implements IRegistrationRepository{
     public List<Registration> allot(String courseOfferingId) {
         List<Registration> registrations = this.findAll();
         registrations = registrations.stream().filter(registration -> registration.getCourseOffering().getId().equals(courseOfferingId)).collect(Collectors.toList());
+        
+        for(Registration currentRegistration: registrations)
+        {
+            currentRegistration.setStatus(RegistrationStatus.CONFIRMED);
+            this.save(currentRegistration);
+        }
         Collections.sort(registrations, Registration.getSortByCourseRegistrationIdClass());
 
         return registrations;
@@ -79,5 +87,40 @@ public class RegistrationRepository implements IRegistrationRepository{
         return false;
     }
 
+    @Override
+    public void confirmRegistrationById(String registrationId)
+    {
+        if(existsById(registrationId))
+        {
+            Registration registration = this.registrationMap.get(registrationId);
+            registration.setStatus(RegistrationStatus.CONFIRMED);
+            registration = this.save(registration);
+        }
+    }
+
+    // @Override
+    // public void confirmAllRegistrations()
+    // {
+    //     for(Map.Entry<String, Registration> entry: registrationMap.entrySet())
+    //     {
+    //         Registration registration = entry.getValue();
+    //         registration.setStatus(RegistrationStatus.CONFIRMED);
+    //         registration = this.save(registration);
+    //     }
+    // }
+
+    @Override
+    public void confirmRegistrationsByCourseOffiering(CourseOffering courseOffering) {
+
+        for(Map.Entry<String, Registration> entry: registrationMap.entrySet())
+        {
+            Registration registration = entry.getValue();
+            if(registration.getCourseOffering().equals(courseOffering))
+            {
+                registration.setStatus(RegistrationStatus.CONFIRMED);
+                registration = this.save(registration);
+            }
+        }
+    }
     
 }

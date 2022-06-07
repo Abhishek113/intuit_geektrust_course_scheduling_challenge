@@ -9,4 +9,5 @@ public interface IRegistrationService {
     
     public Registration registerToCourseOffering(String emailId, String courseOfferingId) throws InputDataErrorException;
     public List<Registration> allot(String courseOfferingId);
+    public Registration cancelRegistration(String registrationId);
 }

@@ -1,5 +1,7 @@
 package com.geektrust.backend.services;
 
+import java.util.Optional;
+
 import com.geektrust.backend.entities.AcknowledgementMessages;
 import com.geektrust.backend.entities.CourseOffering;
 import com.geektrust.backend.exceptions.InputDataErrorException;
@@ -26,6 +28,12 @@ public class CourseOfferingService implements ICourseOfferingService{
         
         if(courseName.equals("") || author.equals("") || date.equals(""))
             throw new InputDataErrorException(AcknowledgementMessages.INPUT_DATA_ERROR.getMessage());
+        
+        String checkCourseOfferingId = CourseOffering.creatId(courseName, author);
+
+        Optional<CourseOffering> checkCourseOffering = this.courseOfferingRepository.findById(checkCourseOfferingId);
+        if(checkCourseOffering.isPresent())
+            return checkCourseOffering.get();
         
         CourseOffering courseOffering = this.courseOfferingRepository.save(new CourseOffering(courseName, author, date, minimumEmployees, maximumEmployees));
         

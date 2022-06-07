@@ -8,6 +8,7 @@ import com.geektrust.backend.entities.RegistrationStatus;
 import com.geektrust.backend.entities.User;
 import com.geektrust.backend.exceptions.InputDataErrorException;
 import com.geektrust.backend.exceptions.NoCourseOfferingFoundException;
+import com.geektrust.backend.exceptions.NoRegistrationFoundException;
 import com.geektrust.backend.repositories.ICourseOfferingRepository;
 import com.geektrust.backend.repositories.IRegistrationRepository;
 import com.geektrust.backend.repositories.IUserRepository;
@@ -48,33 +49,71 @@ public class RegistrationService implements IRegistrationService{
         if(registrationCheck.isPresent())
             return registrationCheck.get();
         
-        Registration registration = new Registration(user, courseOffering);
-        if(!this.idCourseOfferingCapacityFull(courseOffering))
+        Registration registration = null;
+        if(this.isCourseOfferingCapacityFull(courseOffering))
         {
+            registration = new Registration(user, courseOffering);
             registration.setStatus(RegistrationStatus.COURSE_FULL);
             return registration;
         }
-        this.registrationRepository.save(registration);
+
+        courseOffering.incrementTotalRegistration();
+        courseOffering = this.courseOfferingRepository.save(courseOffering);
+
         user.addCourseOffering(courseOffering);
         user = this.userRepository.save(user);
+
+        registration = new Registration(user, courseOffering);
+        this.registrationRepository.save(registration);
+
+        // if(courseOffering.getTotalRegistrations() == courseOffering.getMinimumEmployees())
+        //     this.registrationRepository.confirmRegistrationsByCourseOffiering(courseOffering);
         
-        courseOffering.incrementTotalRegistration();
-        this.courseOfferingRepository.save(courseOffering);
+        // else if(courseOffering.getTotalRegistrations() > courseOffering.getMinimumEmployees())
+        // this.registrationRepository.confirmRegistrationById(registration.getId());
+
+
         return registration;
 
     }
 
-    private boolean idCourseOfferingCapacityFull(CourseOffering courseOffering)
+    private boolean isCourseOfferingCapacityFull(CourseOffering courseOffering)
     {
         if(courseOffering.getTotalRegistrations().equals(courseOffering.getMaximumEmployees()))
-            return false;
+            return true;
         
-        return true;
+        return false;
     }
 
     @Override
     public List<Registration> allot(String courseOfferingId) {
+
+        Optional<CourseOffering> checkCourseOffering  = this.courseOfferingRepository.findById(courseOfferingId);
         
+        if(checkCourseOffering.isPresent())
+        {
+            CourseOffering courseOffering = checkCourseOffering.get();
+            if(courseOffering.getTotalRegistrations() < courseOffering.getMinimumEmployees())
+                this.courseOfferingRepository.delete(courseOffering);
+        }
+
         return this.registrationRepository.allot(courseOfferingId);
+    }
+
+    @Override
+    public Registration cancelRegistration(String registrationId) {
+        
+        Registration registration = this.registrationRepository.findById(registrationId).orElseThrow(()->new NoRegistrationFoundException());
+        if(registration.getStatus().equals(RegistrationStatus.CONFIRMED))
+        {
+            registration.setStatus(RegistrationStatus.CANCEL_REJECTED);
+        }
+        else
+        {
+            this.registrationRepository.delete(registration);
+            registration.setStatus(RegistrationStatus.CANCEL_ACCEPTED);
+        }
+
+        return registration;
     }
 }

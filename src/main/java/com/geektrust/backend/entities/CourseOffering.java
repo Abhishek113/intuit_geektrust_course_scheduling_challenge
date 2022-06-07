@@ -27,12 +27,12 @@ public class CourseOffering extends BaseEnitiy{
         this.minimumEmployees = minimumEmployees;
         this.maximumEmployees = maximumEmployees;
         this.totalRegistrations = 0;
-        creatId();
+        this.id = CourseOffering.creatId(courseName, author);
     }
 
-    private void creatId()
+    public static String creatId(String courseName, String author)
     {
-        this.id = IdPrefix.COURSE_OFFERING.getPrefixValue() + "-" + this.courseName + "-" + this.author;
+        return IdPrefix.COURSE_OFFERING.getPrefixValue() + "-" + courseName + "-" + author;
     }
 
     public String getCourseName() {

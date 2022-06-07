@@ -18,7 +18,7 @@ public class Registration extends BaseEnitiy{
         this.user = user;
         this.courseOffering = courseOffering;
         this.id = Registration.createId(user, courseOffering);
-        this.status = RegistrationStatus.CONFIRMED;
+        this.status = RegistrationStatus.ACCEPTED;
     }
 
     public Registration(String id, User user, CourseOffering courseOffering)

@@ -19,7 +19,8 @@ public class RegisterDto {
             output = registration.getId() + " " + RegistrationStatus.ACCEPTED;
         else
             output = RegistrationStatus.COURSE_FULL.toString();
-        
+
+        // output = registration.getId() + " " + registration.getStatus();
         return output.trim();
     }
     

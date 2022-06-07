@@ -25,18 +25,9 @@ public class CourseOfferingServiceTest {
     @DisplayName("addCourseOffering should add course offering succesfuly")
     public void addCourseOfferingShouldAddCourseOfferingSuccessfuly()
     {
-        try {
-            // String expectedOutput = "OFFERING-JAVA-JAMES";
-            // CourseOffering courseOffering = new CourseOffering("JAVA", "JAMES", "15062022", 1, 2);
-            // ICourseOfferingRepository courseOfferingRepository = new CourseOfferingRepository();
-            // CourseOfferingService courseOfferingService = new CourseOfferingService(courseOfferingRepository);
+        CourseOffering actualCourseOffering = courseOfferingService.addCourseOffering("JAVA", "JAMES", "15062022", 1, 2);
 
-            CourseOffering actualCourseOffering = courseOfferingService.addCourseOffering("JAVA", "JAMES", "15062022", 1, 2);
-
-            Assertions.assertEquals(courseOffering, actualCourseOffering);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        Assertions.assertEquals(courseOffering, actualCourseOffering);
     }
 
     @Test
@@ -58,6 +49,20 @@ public class CourseOfferingServiceTest {
     public void addCourseOfferingShouldThrowInputDataErrorExceptionExceptionIfminimumEmployeesGreaterThanMaximumEmployees()
     {
         Assertions.assertThrows(InputDataErrorException.class, ()->courseOfferingService.addCourseOffering("JAVA", "JAMES", "15062022", 2, 1));
+    }
+
+    @Test
+    @DisplayName("addCourseOffering should not add duplicate course offering")
+    public void addCourseOfferingShouldNotAddDuplicateCourseOffering()
+    {
+        this.courseOfferingRepository.save(this.courseOffering);
+        CourseOffering duplicateCourseOffering = new CourseOffering("JAVA", "JAMES", "15062022", 1, 2);
+
+        duplicateCourseOffering = this.courseOfferingRepository.save(duplicateCourseOffering);
+
+        Integer expectedNumberOfCourseOffering = 1;
+
+        Assertions.assertEquals(expectedNumberOfCourseOffering, this.courseOfferingRepository.findAll().size());
     }
 
     
