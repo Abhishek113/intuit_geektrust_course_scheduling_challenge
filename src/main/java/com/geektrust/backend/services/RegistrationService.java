@@ -2,6 +2,8 @@ package com.geektrust.backend.services;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.geektrust.backend.dtos.CancelDto;
 import com.geektrust.backend.entities.CourseOffering;
 import com.geektrust.backend.entities.Registration;
 import com.geektrust.backend.entities.RegistrationStatus;
@@ -101,19 +103,21 @@ public class RegistrationService implements IRegistrationService{
     }
 
     @Override
-    public Registration cancelRegistration(String registrationId) {
+    public CancelDto cancelRegistration(String registrationId) {
         
         Registration registration = this.registrationRepository.findById(registrationId).orElseThrow(()->new NoRegistrationFoundException());
+        
         if(registration.getStatus().equals(RegistrationStatus.CONFIRMED))
         {
-            registration.setStatus(RegistrationStatus.CANCEL_REJECTED);
+            // registration.setStatus(RegistrationStatus.CANCEL_REJECTED);
+            return new CancelDto(registrationId, RegistrationStatus.CANCEL_REJECTED);
         }
-        else
-        {
-            this.registrationRepository.delete(registration);
-            registration.setStatus(RegistrationStatus.CANCEL_ACCEPTED);
-        }
-
-        return registration;
+        // else
+        // {
+        //     this.registrationRepository.delete(registration);
+        //     registration.setStatus(RegistrationStatus.CANCEL_ACCEPTED);
+        // }
+        this.registrationRepository.delete(registration);
+        return new CancelDto(registrationId, RegistrationStatus.CANCEL_ACCEPTED);
     }
 }

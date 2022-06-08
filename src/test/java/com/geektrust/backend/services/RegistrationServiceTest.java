@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.geektrust.backend.dtos.CancelDto;
 import com.geektrust.backend.entities.CourseOffering;
 import com.geektrust.backend.entities.Registration;
 import com.geektrust.backend.entities.RegistrationStatus;
@@ -254,15 +255,48 @@ public class RegistrationServiceTest {
     }
 
     @Test
-    @DisplayName("cancelRegistration should accept cancelation")
-    public void cancelRegistrationShouldAcceptCancelation()
+    @DisplayName("cancelRegistration should accept cancellation")
+    public void cancelRegistrationShouldAcceptCancellation()
     {
-        CourseOffering courseOffering1 = new CourseOffering("GO", "JAMES", "15062022", 2, 3);
+        CourseOffering courseOffering1 = new CourseOffering("JAVA", "JAMES", "15062022", 1, 2);
         this.courseOfferingRepository.save(courseOffering1);
-        Registration registration1 = this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering1.getId());
-        Registration registration2 = this.registrationService.registerToCourseOffering("SAM@GMAIL.COM", courseOffering1.getId());
-        Assertions.assertEquals(RegistrationStatus.CONFIRMED, registration1.getStatus());
-        Assertions.assertEquals(RegistrationStatus.CONFIRMED, registration2.getStatus());
-    }
-    
+
+        User user1 = new User("ANDY@GMAIL.COM");
+        this.userRepository.save(user1);
+
+        Registration registration = this.registrationService.registerToCourseOffering(user1.getEmailId(), courseOffering1.getId());
+        CancelDto cancelDto = this.registrationService.cancelRegistration(registration.getId());
+
+        String expectedOuptut = "REG-COURSE-ANDY-JAVA CANCEL_ACCEPTED";
+
+        Assertions.assertTrue(this.registrationRepository.findById(registration.getId()).isEmpty());
+
+        Assertions.assertEquals(expectedOuptut, cancelDto.toString());
+    }    
+
+    @Test
+    @DisplayName("cancelRegistration should reject cancellation")
+    public void cancelRegistrationShouldRejectCancellation()
+    {
+        CourseOffering courseOffering1 = new CourseOffering("JAVA", "JAMES", "15062022", 1, 2);
+        this.courseOfferingRepository.save(courseOffering1);
+
+        User user1 = new User("ANDY@GMAIL.COM");
+        this.userRepository.save(user1);
+
+
+        Registration registration = this.registrationService.registerToCourseOffering(user1.getEmailId(), courseOffering1.getId());
+        
+        List<Registration> allotedRegistrations = this.registrationService.allot(courseOffering1.getId());
+        
+        CancelDto cancelDto = this.registrationService.cancelRegistration(registration.getId());
+
+        
+
+        String expectedOuptut = "REG-COURSE-ANDY-JAVA CANCEL_REJECTED";
+
+        Assertions.assertFalse(this.registrationRepository.findById(registration.getId()).isEmpty());
+
+        Assertions.assertEquals(expectedOuptut, cancelDto.toString());
+    }  
 }

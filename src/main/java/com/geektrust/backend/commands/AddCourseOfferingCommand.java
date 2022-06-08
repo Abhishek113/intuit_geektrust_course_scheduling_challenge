@@ -23,7 +23,10 @@ public class AddCourseOfferingCommand implements ICommand{
         
         try {
             if(values.size() < minNumberOfInputValues)
-                throw new InputDataErrorException(AcknowledgementMessages.INPUT_DATA_ERROR.getMessage());
+            {
+                System.out.println(AcknowledgementMessages.INPUT_DATA_ERROR);
+                return;
+            }
             
             
             String courseName = values.get(1), author = values.get(2), date = values.get(3); 

@@ -2,41 +2,37 @@ package com.geektrust.backend.commands;
 
 import java.util.List;
 
-import com.geektrust.backend.dtos.RegisterDto;
+import com.geektrust.backend.dtos.CancelDto;
 import com.geektrust.backend.entities.AcknowledgementMessages;
 import com.geektrust.backend.entities.Registration;
-import com.geektrust.backend.exceptions.InputDataErrorException;
+import com.geektrust.backend.exceptions.NoRegistrationFoundException;
 import com.geektrust.backend.services.IRegistrationService;
 
-public class RegisterCommand implements ICommand{
+public class CancelCommand implements ICommand{
     
     private final IRegistrationService registrationService;
-    private final Integer minInputValuesForRegistration = 3;
-    
-    public RegisterCommand(IRegistrationService registrationService)
+    private final Integer minInputValuesForRegistration = 2;
+
+    public CancelCommand(IRegistrationService registrationService)
     {
         this.registrationService = registrationService;
     }
 
     @Override
     public void execute(List<String> values) {
-     
         try {
+            
             if(values.size() < minInputValuesForRegistration)
             {
                 System.out.println(AcknowledgementMessages.INPUT_DATA_ERROR);
                 return;
             }
-            
-            String emailId = values.get(1);
-            String courseOfferingId = values.get(2);
 
-            Registration registration = this.registrationService.registerToCourseOffering(emailId, courseOfferingId);
-            RegisterDto registerDto = new RegisterDto(registration);
+            String registrationId = values.get(1);
+            CancelDto cancelDto = this.registrationService.cancelRegistration(registrationId);
+            System.out.println(cancelDto);
 
-            System.out.println(registerDto);
-            
-        } catch (InputDataErrorException e) {
+        } catch (NoRegistrationFoundException e) {
             System.out.println(e.getMessage());
         }
     }

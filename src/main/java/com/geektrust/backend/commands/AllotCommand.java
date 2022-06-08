@@ -24,7 +24,10 @@ public class AllotCommand implements ICommand{
 
         try {
             if(values.size() < minNumberOfInputValues)
-                throw new InputDataErrorException(AcknowledgementMessages.INPUT_DATA_ERROR.getMessage());
+            {
+                System.out.println(AcknowledgementMessages.INPUT_DATA_ERROR);
+                return;
+            }
             
             String courseOfferingId = values.get(1);
 

@@ -2,6 +2,7 @@ package com.geektrust.backend.appConfig;
 
 import com.geektrust.backend.commands.AddCourseOfferingCommand;
 import com.geektrust.backend.commands.AllotCommand;
+import com.geektrust.backend.commands.CancelCommand;
 import com.geektrust.backend.commands.CommandInvoker;
 import com.geektrust.backend.commands.ICommand;
 import com.geektrust.backend.commands.RegisterCommand;
@@ -18,17 +19,18 @@ import com.geektrust.backend.services.RegistrationService;
 
 public class ApplicationConfiguration {
 
-    ICourseOfferingRepository courseOfferingRepository = new CourseOfferingRepository();
-    ICourseOfferingService courseOfferingService = new CourseOfferingService(courseOfferingRepository);
+    private final ICourseOfferingRepository courseOfferingRepository = new CourseOfferingRepository();
+    private final ICourseOfferingService courseOfferingService = new CourseOfferingService(courseOfferingRepository);
 
-    IRegistrationRepository registrationRepository = new RegistrationRepository();
-    IUserRepository userRepository = new UserRepository();
-    IRegistrationService registrationService = new RegistrationService(registrationRepository, courseOfferingRepository, userRepository);
+    private final IRegistrationRepository registrationRepository = new RegistrationRepository();
+    private final IUserRepository userRepository = new UserRepository();
+    private final IRegistrationService registrationService = new RegistrationService(registrationRepository, courseOfferingRepository, userRepository);
 
 
-    ICommand addCourseOfferingCommand = new AddCourseOfferingCommand(courseOfferingService);
-    ICommand registerCommand = new RegisterCommand(registrationService);
-    ICommand allotCommand = new AllotCommand(registrationService);
+    private final ICommand addCourseOfferingCommand = new AddCourseOfferingCommand(courseOfferingService);
+    private final ICommand registerCommand = new RegisterCommand(registrationService);
+    private final ICommand allotCommand = new AllotCommand(registrationService);
+    private final ICommand cancelCommand = new CancelCommand(registrationService);
 
     CommandInvoker commandInvoker = new CommandInvoker();
 
@@ -37,6 +39,7 @@ public class ApplicationConfiguration {
         commandInvoker.register("ADD-COURSE-OFFERING", addCourseOfferingCommand);
         commandInvoker.register("REGISTER", registerCommand);
         commandInvoker.register("ALLOT", allotCommand);
+        commandInvoker.register("CANCEL", cancelCommand);
 
         return commandInvoker;
     }
