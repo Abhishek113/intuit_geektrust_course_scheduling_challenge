@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.geektrust.backend.dtos.CancelDto;
 import com.geektrust.backend.entities.AcknowledgementMessages;
-import com.geektrust.backend.entities.Registration;
 import com.geektrust.backend.exceptions.NoRegistrationFoundException;
 import com.geektrust.backend.services.IRegistrationService;
 

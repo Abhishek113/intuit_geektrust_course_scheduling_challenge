@@ -42,7 +42,7 @@ public class RegisterCommandTest {
     }
 
     @Test
-    @DisplayName("RegisterCommand ould print registration id and accepted status")
+    @DisplayName("RegisterCommand should print registration id and accepted status")
     public void RegisterCommandShouldPrintRegistrationIdAndACCEPTEDstatus()
     {
         this.courseOfferingRepository.save(this.courseOffering);
@@ -75,7 +75,7 @@ public class RegisterCommandTest {
 
         this.registerCommand.execute(values);
 
-        String expectedOutput = "REG-COURSE-ANDY-JAVA ACCEPTED\nREG-COURSE-WOO-JAVA ACCEPTED\nCOURSE_FULL";
+        String expectedOutput = "REG-COURSE-ANDY-JAVA ACCEPTED\nREG-COURSE-WOO-JAVA ACCEPTED\nCOURSE_FULL_ERROR";
 
         Assertions.assertEquals(expectedOutput, outputStreamCaptor.toString().trim());
 

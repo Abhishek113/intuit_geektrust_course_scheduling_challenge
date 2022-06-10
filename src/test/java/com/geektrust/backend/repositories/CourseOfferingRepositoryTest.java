@@ -1,5 +1,8 @@
 package com.geektrust.backend.repositories;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import com.geektrust.backend.entities.CourseOffering;
 import com.geektrust.backend.exceptions.NoCourseOfferingFoundException;
 
@@ -13,6 +16,33 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class CourseOfferingRepositoryTest {
     
+    private final CourseOffering courseOffering = new CourseOffering("JAVA", "JAMES", "15062022", 1, 2);
+    private final CourseOfferingRepository courseOfferingRepository = new CourseOfferingRepository();
+
+    @Test
+    @DisplayName("findById should return correct user courseoffering object")
+    public void findByIdShoulfReturnCorrectCourserOfferingObject()
+    {
+        
+        this.courseOfferingRepository.save(courseOffering);
+
+        Assertions.assertEquals(courseOffering, courseOfferingRepository.findById(this.courseOffering.getId()).get());
+    }
+    
+    @Test
+    @DisplayName("findAll should return correct list of course offering objects")
+    public void findAllShouldReturnCorrectListOfCourseOfferingObjects()
+    {
+        List<CourseOffering> courseOfferingList = new ArrayList<>();
+        
+        courseOfferingList.add(this.courseOffering);
+        courseOfferingList.add(new CourseOffering("Python", "JAMES", "15062022", 1, 2));
+        
+        for(CourseOffering courseOffering: courseOfferingList)
+            this.courseOfferingRepository.save(courseOffering);
+        
+        Assertions.assertEquals(courseOfferingList.stream().collect(Collectors.toSet()), this.courseOfferingRepository.findAll().stream().collect(Collectors.toSet()));
+    }
 
     @Test
     @DisplayName("Save method should save the course object correctly")

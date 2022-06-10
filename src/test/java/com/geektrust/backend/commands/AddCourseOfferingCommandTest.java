@@ -39,28 +39,20 @@ public class AddCourseOfferingCommandTest {
     @DisplayName("execute should print course offering id")
     public void executeShouldPrintCourseOfferingId()
     {
-        try {
-            String expectedOutput = "OFFERING-JAVA-JAMES";
-            addCourseOfferingCommand.execute(List.of("ADD-COURSE-OFFERING", "JAVA", "JAMES", "15062022", "1", "2"));
+        String expectedOutput = "OFFERING-JAVA-JAMES";
+        addCourseOfferingCommand.execute(List.of("ADD-COURSE-OFFERING", "JAVA", "JAMES", "15062022", "1", "2"));
 
-            Assertions.assertEquals(expectedOutput, outputStreamCaptor.toString().trim());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        Assertions.assertEquals(expectedOutput, outputStreamCaptor.toString().trim());
     }
 
     @Test
     @DisplayName("execute should print INPUT_DATA_ERROR given only course name")
     public void executeShouldPrintINPUT_DATA_ERRORMessageGivenOnlyCourseName()
     {
-        try {
-            String expectedOutput = "INPUT_DATA_ERROR";
-            addCourseOfferingCommand.execute(List.of("ADD-COURSE-OFFERING", "JAVA"));
+        String expectedOutput = "INPUT_DATA_ERROR";
+        addCourseOfferingCommand.execute(List.of("ADD-COURSE-OFFERING", "JAVA"));
 
-            Assertions.assertEquals(expectedOutput, outputStreamCaptor.toString().trim());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        Assertions.assertEquals(expectedOutput, outputStreamCaptor.toString().trim());
     }
 
 

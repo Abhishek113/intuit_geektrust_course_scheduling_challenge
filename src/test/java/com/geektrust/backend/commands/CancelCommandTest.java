@@ -3,8 +3,6 @@ package com.geektrust.backend.commands;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
-
-import com.geektrust.backend.dtos.CancelDto;
 import com.geektrust.backend.entities.CourseOffering;
 import com.geektrust.backend.entities.Registration;
 import com.geektrust.backend.entities.User;

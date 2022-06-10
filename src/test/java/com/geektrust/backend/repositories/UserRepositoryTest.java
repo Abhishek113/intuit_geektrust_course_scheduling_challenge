@@ -17,17 +17,12 @@ public class UserRepositoryTest {
     @DisplayName("Save method should save the course object correctly")
     public void saveMethodShouldSaveTheCourseCorrectly()
     {
-        try {
-            User user = new User("ANDY@gmail.com");
-            UserRepository userRepository = new UserRepository();
+        User user = new User("ANDY@gmail.com");
+        UserRepository userRepository = new UserRepository();
 
-            user = userRepository.save(user);
-            User savedUser = userRepository.findById(user.getEmailId()).orElseThrow(()->new NoUserFoundException());
-            Assertions.assertEquals(user, savedUser);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        user = userRepository.save(user);
+        User savedUser = userRepository.findById(user.getEmailId()).orElseThrow(()->new NoUserFoundException());
+        Assertions.assertEquals(user, savedUser);
     }
     
 }

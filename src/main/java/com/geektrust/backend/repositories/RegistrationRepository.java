@@ -54,7 +54,10 @@ public class RegistrationRepository implements IRegistrationRepository{
         
         for(Registration currentRegistration: registrations)
         {
-            currentRegistration.setStatus(RegistrationStatus.CONFIRMED);
+            if(currentRegistration.getCourseOffering().isMinimumCapacityFulfilled())
+                currentRegistration.setStatus(RegistrationStatus.CONFIRMED);
+            else
+                currentRegistration.setStatus(RegistrationStatus.COURSE_CANCELED);
             this.save(currentRegistration);
         }
         Collections.sort(registrations, Registration.getSortByCourseRegistrationIdClass());

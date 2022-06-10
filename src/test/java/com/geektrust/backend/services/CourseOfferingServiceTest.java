@@ -27,7 +27,7 @@ public class CourseOfferingServiceTest {
     {
         CourseOffering actualCourseOffering = courseOfferingService.addCourseOffering("JAVA", "JAMES", "15062022", 1, 2);
 
-        Assertions.assertEquals(courseOffering, actualCourseOffering);
+        Assertions.assertEquals(this.courseOffering, actualCourseOffering);
     }
 
     @Test

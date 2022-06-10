@@ -5,8 +5,6 @@ import java.io.PrintStream;
 import java.util.List;
 
 import com.geektrust.backend.entities.CourseOffering;
-import com.geektrust.backend.entities.Registration;
-import com.geektrust.backend.entities.User;
 import com.geektrust.backend.repositories.CourseOfferingRepository;
 import com.geektrust.backend.repositories.RegistrationRepository;
 import com.geektrust.backend.repositories.UserRepository;
@@ -43,12 +41,14 @@ public class AllotCommandTest {
     @DisplayName("Allot command should display result correctly")
     public void allotCommandSHouldDisplayResultCorrectly()
     {
-        User user = new User("ANDY@GMAIL.COM");
-        this.userRepository.save(user);
+        // User user = new User("ANDY@GMAIL.COM");
+        // this.userRepository.save(user);
         CourseOffering courseOffering = new CourseOffering("JAVA", "JAMES", "05062022", 1, 2);
         this.courseOfferingRepository.save(courseOffering);
-        Registration registration = new Registration(user, courseOffering);
-        this.registrationRepository.save(registration);
+        // Registration registration = new Registration(user, courseOffering);
+        // this.registrationRepository.save(registration);
+
+        this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering.getId());
 
         List<String> values = List.of("ALLOT", "OFFERING-JAVA-JAMES");
 
@@ -64,16 +64,18 @@ public class AllotCommandTest {
     @DisplayName("Allot should also display the registration of cancelled course offering")
     public void allotShouldAlsoDisplayTheRegistrationOfCancelledCourseOffering()
     {
-        User user = new User("ANDY@GMAIL.COM");
-        this.userRepository.save(user);
+        // User user = new User("ANDY@GMAIL.COM");
+        // this.userRepository.save(user);
         CourseOffering courseOffering = new CourseOffering("JAVA", "JAMES", "05062022", 2, 2);
         this.courseOfferingRepository.save(courseOffering);
-        Registration registration = this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering.getId());
-        this.registrationRepository.save(registration);
+        // Registration registration = this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering.getId());
+        // this.registrationRepository.save(registration);
+
+        this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering.getId());
 
         List<String> values = List.of("ALLOT", "OFFERING-JAVA-JAMES");
 
-        String expectedOutput = "REG-COURSE-ANDY-JAVA ANDY@GMAIL.COM OFFERING-JAVA-JAMES JAVA JAMES 05062022 CONFIRMED";
+        String expectedOutput = "REG-COURSE-ANDY-JAVA ANDY@GMAIL.COM OFFERING-JAVA-JAMES JAVA JAMES 05062022 COURSE_CANCELED";
 
         this.allotCommand.execute(values);
 

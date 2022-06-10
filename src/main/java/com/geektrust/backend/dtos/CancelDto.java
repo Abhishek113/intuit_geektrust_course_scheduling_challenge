@@ -1,6 +1,5 @@
 package com.geektrust.backend.dtos;
 
-import com.geektrust.backend.entities.Registration;
 import com.geektrust.backend.entities.RegistrationStatus;
 
 public class CancelDto {

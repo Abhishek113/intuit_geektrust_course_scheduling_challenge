@@ -67,6 +67,11 @@ public class CourseOffering extends BaseEnitiy{
         --this.totalRegistrations;
     }
 
+    public boolean isMinimumCapacityFulfilled()
+    {
+        return this.totalRegistrations >= this.minimumEmployees;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(obj == null)

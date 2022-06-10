@@ -16,9 +16,9 @@ public class RegisterDto {
     public String toString() {
         String output = "";
         if(!registration.getStatus().equals(RegistrationStatus.COURSE_FULL))
-            output = registration.getId() + " " + RegistrationStatus.ACCEPTED;
+            output = registration.getId() + " " + RegistrationStatus.ACCEPTED.getStatus();
         else
-            output = RegistrationStatus.COURSE_FULL.toString();
+            output = RegistrationStatus.COURSE_FULL.getStatus();
 
         // output = registration.getId() + " " + registration.getStatus();
         return output.trim();

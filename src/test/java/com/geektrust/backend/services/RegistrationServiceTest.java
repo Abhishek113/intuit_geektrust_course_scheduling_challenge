@@ -139,21 +139,21 @@ public class RegistrationServiceTest {
         this.courseOfferingRepository.save(courseOffering2);
         this.courseOfferingRepository.save(courseOffering3);
 
-        User user1 = new User("ANDY@GMAIL.COM");
-        User user2 = new User("SAM@GMAIL.COM");
+        // User user1 = new User("ANDY@GMAIL.COM");
+        // User user2 = new User("SAM@GMAIL.COM");
 
         List<Registration> registrations = new ArrayList<>();
-        registrations.add(new Registration(user1, courseOffering1));
-        registrations.add(new Registration(user1, courseOffering3));
-        registrations.add(new Registration(user2, courseOffering3));
-        registrations.add(new Registration(user2, courseOffering2));
+        registrations.add(this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering1.getId()));
+        registrations.add(this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering3.getId()));
+        registrations.add(this.registrationService.registerToCourseOffering("SAM@GMAIL.COM", courseOffering3.getId()));
+        registrations.add(this.registrationService.registerToCourseOffering("SAM@GMAIL.COM", courseOffering2.getId()));
 
         List<Registration> expectedOutput = new ArrayList<>();
         expectedOutput.add(registrations.get(1));
         expectedOutput.add(registrations.get(2));            
 
-        for(Registration registration_: registrations)
-            this.registrationRepository.save(registration_);
+        // for(Registration registration_: registrations)
+        //     this.registrationRepository.save(registration_);
         
         Assertions.assertEquals(expectedOutput, this.registrationService.allot(courseOffering3.getId()));
 
@@ -161,7 +161,7 @@ public class RegistrationServiceTest {
 
 
     @Test
-    @DisplayName("Allot should return delete course offering if minimum enrollment not done")
+    @DisplayName("Allot should delete course offering if minimum enrollment not done")
     public void allotMethodShouldDeleteCourseOfferingIfMinimumEnrollmentNotDone()
     {
         CourseOffering courseOffering1 = new CourseOffering("JAVA", "JAMES", "15062022", 1, 2);
@@ -172,21 +172,21 @@ public class RegistrationServiceTest {
         this.courseOfferingRepository.save(courseOffering2);
         this.courseOfferingRepository.save(courseOffering3);
 
-        User user1 = new User("ANDY@GMAIL.COM");
-        User user2 = new User("SAM@GMAIL.COM");
+        // User user1 = new User("ANDY@GMAIL.COM");
+        // User user2 = new User("SAM@GMAIL.COM");
 
         List<Registration> registrations = new ArrayList<>();
-        registrations.add(new Registration(user1, courseOffering1));
-        registrations.add(new Registration(user1, courseOffering3));
-        //registrations.add(new Registration(user2, courseOffering3));
-        registrations.add(new Registration(user2, courseOffering2));
+        registrations.add(this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering1.getId()));
+        registrations.add(this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering3.getId()));
+        // registrations.add(this.registrationService.registerToCourseOffering("SAM@GMAIL.COM", courseOffering3.getId()));
+        registrations.add(this.registrationService.registerToCourseOffering("SAM@GMAIL.COM", courseOffering2.getId()));
 
         List<Registration> expectedOutput = new ArrayList<>();
         expectedOutput.add(registrations.get(1));
         expectedOutput.add(registrations.get(2));            
 
-        for(Registration registration_: registrations)
-            this.registrationRepository.save(registration_);
+        // for(Registration registration_: registrations)
+        //     this.registrationRepository.save(registration_);
         
         //Assertions.assertEquals(expectedOutput, this.registrationService.allot(courseOffering3.getId()));
         List<Registration> actualRegistrations = this.registrationService.allot(courseOffering3.getId());
@@ -201,19 +201,18 @@ public class RegistrationServiceTest {
     {
         CourseOffering courseOffering1 = new CourseOffering("JAVA", "JAMES", "15062022", 3, 3);
         this.courseOfferingRepository.save(courseOffering1);
-        User user1 = new User("ANDY@GMAIL.COM");
-        User user2 = new User("SAM@GMAIL.COM");
+        // User user1 = new User("ANDY@GMAIL.COM");
+        // User user2 = new User("SAM@GMAIL.COM");
 
         List<Registration> registrations = new ArrayList<>();
-        registrations.add(new Registration(user1, courseOffering1));
-        registrations.add(new Registration(user2, courseOffering1));
-
+        registrations.add(this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering1.getId()));
+        registrations.add(this.registrationService.registerToCourseOffering("SAM@GMAIL.COM", courseOffering1.getId()));
         // List<Registration> expectedOutput = new ArrayList<>();
         // expectedOutput.add(registrations.get(0));
         // expectedOutput.add(registrations.get(1));
         
-        for(Registration registration_: registrations)
-            this.registrationRepository.save(registration_);
+        // for(Registration registration_: registrations)
+        //     this.registrationRepository.save(registration_);
         
         //Assertions.assertEquals(expectedOutput, this.registrationService.allot(courseOffering3.getId()));
         List<Registration> actualRegistrations = this.registrationService.allot(courseOffering1.getId());
@@ -236,19 +235,20 @@ public class RegistrationServiceTest {
         this.courseOfferingRepository.save(courseOffering3);
 
 
-        User user1 = new User("ANDY@GMAIL.COM");
-        User user2 = new User("SAM@GMAIL.COM");
+        // User user1 = new User("ANDY@GMAIL.COM");
+        // User user2 = new User("SAM@GMAIL.COM");
 
         List<Registration> registrations = new ArrayList<>();
-        registrations.add(new Registration(user1, courseOffering1));
-        registrations.add(new Registration(user1, courseOffering3));
-        registrations.add(new Registration(user2, courseOffering3));
-        registrations.add(new Registration(user2, courseOffering2));
+        registrations.add(this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering1.getId()));
+        registrations.add(this.registrationService.registerToCourseOffering("ANDY@GMAIL.COM", courseOffering3.getId()));
+        registrations.add(this.registrationService.registerToCourseOffering("SAM@GMAIL.COM", courseOffering3.getId()));
+        registrations.add(this.registrationService.registerToCourseOffering("SAM@GMAIL.COM", courseOffering2.getId()));
+
 
         List<Registration> expectedOutput = new ArrayList<>();          
 
-        for(Registration registration_: registrations)
-            this.registrationRepository.save(registration_);
+        // for(Registration registration_: registrations)
+           // this.registrationRepository.save(registration_);
         
         Assertions.assertEquals(expectedOutput, this.registrationService.allot("xyzAbc"));
 

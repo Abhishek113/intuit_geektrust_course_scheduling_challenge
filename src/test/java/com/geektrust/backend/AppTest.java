@@ -62,6 +62,26 @@ class AppTest {
 
     }
 
+    @Test
+    @DisplayName("run method should display corret output 3")
+    public void runMethodShouldDisplayCorrectOutput3()
+    {
+        String expectedOutput = "OFFERING-DATASCIENCE-BOB\n" + "REG-COURSE-ANDY-DATASCIENCE ACCEPTED\n"
+                                + "REG-COURSE-WOO-DATASCIENCE ACCEPTED\n" + "COURSE_FULL_ERROR\n"
+                                + "REG-COURSE-ANDY-DATASCIENCE ANDY@GMAIL.COM OFFERING-DATASCIENCE-BOB DATASCIENCE BOB 05062022 CONFIRMED\n"
+                                + "REG-COURSE-WOO-DATASCIENCE WOO@GMAIL.COM OFFERING-DATASCIENCE-BOB DATASCIENCE BOB 05062022 CONFIRMED";
+        
+        
+        String inputFile = "sample_input/input4.txt";
+
+        String[] args = {inputFile};
+
+        App.run(args);
+
+        Assertions.assertEquals(expectedOutput, outputStreamCaptor.toString().trim());
+
+    }
+
     @AfterEach
     public void tearDown()
     {
